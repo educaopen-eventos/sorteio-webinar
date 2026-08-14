@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Cadastro — Sorteio do Webinar</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=SUSE:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --navy-900: #020618;
+      --navy-800: #0f172b;
+      --navy-600: #314158;
+      --slate-400: #90a1b9;
+      --slate-200: #cad5e2;
+      --slate-100: #e2e8f0;
+      --cyan: #00ccff;
+      --white: #ffffff;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'SUSE', ui-sans-serif, system-ui, sans-serif;
+      background: linear-gradient(160deg, var(--navy-900) 0%, var(--navy-800) 55%, #0a2233 100%);
+      color: var(--slate-100);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 28px 16px 40px;
+    }
+    .logo { font-size: 26px; font-weight: 700; color: var(--white); letter-spacing: .5px; margin-bottom: 26px; }
+    .logo .oo { color: var(--cyan); font-weight: 600; }
+    .card {
+      width: 100%;
+      max-width: 460px;
+      background: rgba(255,255,255,.04);
+      border: 1px solid rgba(255,255,255,.1);
+      border-radius: 16px;
+      padding: 28px 26px 30px;
+      backdrop-filter: blur(6px);
+    }
+    .tag {
+      display: inline-block;
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      color: var(--cyan);
+      background: rgba(0,204,255,.1);
+      border: 1px solid rgba(0,204,255,.35);
+      border-radius: 999px;
+      padding: 5px 14px;
+      margin-bottom: 14px;
+    }
+    h1 { font-size: 22px; font-weight: 700; color: var(--white); line-height: 1.3; margin-bottom: 8px; }
+    .sub { font-size: 14.5px; color: var(--slate-200); line-height: 1.55; margin-bottom: 22px; }
+    label { display: block; font-size: 13px; font-weight: 600; color: var(--slate-200); margin: 14px 0 5px; }
+    label .opc { font-weight: 400; color: var(--slate-400); }
+    input {
+      width: 100%;
+      background: rgba(2,6,24,.55);
+      border: 1px solid var(--navy-600);
+      border-radius: 10px;
+      color: var(--white);
+      font-family: inherit;
+      font-size: 15.5px;
+      padding: 12px 14px;
+      outline: none;
+      transition: border-color .15s;
+    }
+    input:focus { border-color: var(--cyan); }
+    input::placeholder { color: #62748e; }
+    .erro { display: none; font-size: 13px; color: #ff8c8c; margin-top: 4px; }
+    button {
+      width: 100%;
+      margin-top: 24px;
+      background: var(--cyan);
+      color: var(--navy-900);
+      border: none;
+      border-radius: 10px;
+      font-family: inherit;
+      font-size: 16px;
+      font-weight: 700;
+      padding: 14px;
+      cursor: pointer;
+      transition: filter .15s, transform .05s;
+    }
+    button:hover { filter: brightness(1.08); }
+    button:active { transform: scale(.99); }
+    button:disabled { filter: grayscale(.5) brightness(.8); cursor: wait; }
+    .rodape { font-size: 12px; color: var(--slate-400); line-height: 1.5; margin-top: 16px; text-align: center; }
+    .atalho-whats {
+      display: flex; align-items: center; justify-content: center; gap: 10px;
+      text-decoration: none;
+      font-size: 16px; font-weight: 700; color: #ffffff;
+      background: #25d366;
+      border-radius: 10px;
+      padding: 13px 14px;
+      margin-top: 14px;
+      transition: filter .15s;
+    }
+    .atalho-whats:hover { filter: brightness(1.06); }
+    .atalho-whats svg { flex-shrink: 0; }
+    #telaSucesso { display: none; text-align: center; padding: 10px 0 6px; }
+    #telaSucesso h2 { color: var(--white); font-size: 20px; margin-bottom: 10px; }
+    #telaSucesso p { font-size: 14.5px; color: var(--slate-200); line-height: 1.55; margin-bottom: 20px; }
+    .check {
+      width: 58px; height: 58px; border-radius: 50%;
+      background: rgba(0,204,255,.12); border: 2px solid var(--cyan);
+      display: flex; align-items: center; justify-content: center;
+      margin: 4px auto 16px; color: var(--cyan); font-size: 28px;
+    }
+    a.btn-whats {
+      display: block; text-decoration: none;
+      background: #25d366; color: #ffffff;
+      border-radius: 10px; font-weight: 700; font-size: 16px; padding: 14px;
+    }
+    #erroGeral {
+      display: none;
+      font-size: 13.5px; color: #ffb0b0;
+      background: rgba(255,80,80,.08); border: 1px solid rgba(255,80,80,.4);
+      border-radius: 10px; padding: 10px 12px; margin-top: 16px; line-height: 1.45;
+    }
+  </style>
+</head>
+<body>
+  <div class="logo">educa<span class="oo">()</span>pen</div>
+
+  <div class="card">
+    <div id="telaForm">
+      <span class="tag">Sorteio · <span data-cfg="webinar">Webinar EducaOpen</span></span>
+      <h1>Garanta sua participação no <span data-cfg="sorteio">sorteio de ingressos</span></h1>
+      <p class="sub">Para participar do sorteio, preencha os dados. Ou fale direto com o Apresentador:</p>
+
+      <form id="form" novalidate>
+        <label for="nome">Nome completo</label>
+        <input id="nome" type="text" autocomplete="name" placeholder="Seu nome" required>
+        <div class="erro" id="erro-nome">Informe seu nome.</div>
+
+        <label for="telefone">WhatsApp</label>
+        <input id="telefone" type="tel" autocomplete="tel" inputmode="tel" placeholder="(11) 99999-9999" required>
+        <div class="erro" id="erro-telefone">Informe um telefone válido.</div>
+
+        <label for="email">E-mail <span class="opc">(opcional)</span></label>
+        <input id="email" type="email" autocomplete="email" placeholder="voce@instituicao.edu.br">
+
+        <label for="cargo">Cargo</label>
+        <input id="cargo" type="text" autocomplete="organization-title" placeholder="Ex.: Diretor Financeiro" required>
+        <div class="erro" id="erro-cargo">Informe seu cargo.</div>
+
+        <label for="instituicao">Instituição</label>
+        <input id="instituicao" type="text" autocomplete="organization" placeholder="Em nome de qual instituição você fala?" required>
+        <div class="erro" id="erro-instituicao">Informe sua instituição.</div>
+
+        <button id="btn" type="submit">Confirmar sorteio e ir para WhatsApp</button>
+      </form>
+
+      <div id="erroGeral"></div>
+
+      <a id="atalhoWhats" class="atalho-whats" href="https://wa.me/5521980503130">
+        <svg width="22" height="22" viewBox="0 0 32 32" fill="#ffffff"><path d="M16.004 3.2c-7.06 0-12.8 5.74-12.8 12.8 0 2.26.6 4.46 1.73 6.4L3.2 28.8l6.58-1.72a12.74 12.74 0 0 0 6.22 1.58h.01c7.06 0 12.79-5.74 12.79-12.8 0-3.42-1.33-6.63-3.75-9.05a12.71 12.71 0 0 0-9.05-3.61zm0 23.36h-.01a10.6 10.6 0 0 1-5.4-1.48l-.39-.23-4.02 1.05 1.07-3.92-.25-.4a10.55 10.55 0 0 1-1.62-5.63c0-5.86 4.77-10.63 10.64-10.63 2.84 0 5.5 1.11 7.51 3.11a10.56 10.56 0 0 1 3.11 7.52c0 5.87-4.77 10.61-10.64 10.61zm5.83-7.95c-.32-.16-1.89-.93-2.18-1.04-.29-.11-.5-.16-.72.16-.21.32-.82 1.04-1.01 1.25-.19.21-.37.24-.69.08-.32-.16-1.35-.5-2.57-1.59-.95-.85-1.59-1.9-1.78-2.22-.19-.32-.02-.49.14-.65.14-.14.32-.37.48-.56.16-.19.21-.32.32-.53.11-.21.05-.4-.03-.56-.08-.16-.72-1.73-.98-2.37-.26-.62-.52-.54-.72-.55l-.61-.01c-.21 0-.56.08-.85.4-.29.32-1.12 1.09-1.12 2.66s1.15 3.09 1.31 3.3c.16.21 2.25 3.44 5.46 4.82.76.33 1.36.53 1.82.68.77.24 1.47.21 2.02.13.62-.09 1.89-.77 2.16-1.52.27-.75.27-1.39.19-1.52-.08-.13-.29-.21-.61-.37z"/></svg>
+        <span>Ir para o WhatsApp</span>
+      </a>
+
+      <p class="rodape">Suas informações serão usadas exclusivamente para o sorteio e para o contato pós-evento, conforme a LGPD.</p>
+    </div>
+
+    <div id="telaSucesso">
+      <div class="check">✓</div>
+      <h2>Cadastro confirmado!</h2>
+      <p>Você já está participando do sorteio. Estamos abrindo seu WhatsApp — se não abrir sozinho, toque no botão abaixo.</p>
+      <a id="linkWhats" class="btn-whats" href="#">Abrir WhatsApp</a>
+    </div>
+  </div>
+
+  <script>
+    // Endereço do motor que grava os leads na planilha (Google Apps Script)
+    var API = 'https://script.google.com/macros/s/AKfycbzXbsHi9KwMP3Wq41sYIqz7_fqy97c4bU5pmT1rFu8UIK9e0e9UvKUbW8Wimqc_2kUGGQ/exec';
+
+    var form = document.getElementById('form');
+    var btn = document.getElementById('btn');
+    var whatsappUrlDireto = document.getElementById('atalhoWhats').href;
+
+    // Busca as configurações do webinar (nome, apresentador, link do WhatsApp)
+    fetch(API + '?api=cfg')
+      .then(function (r) { return r.json(); })
+      .then(function (cfg) {
+        document.querySelectorAll('[data-cfg="webinar"]').forEach(function (el) { el.textContent = cfg.webinar; });
+        document.querySelectorAll('[data-cfg="sorteio"]').forEach(function (el) { el.textContent = cfg.sorteio; });
+        whatsappUrlDireto = cfg.whatsappUrl;
+        document.getElementById('atalhoWhats').href = cfg.whatsappUrl;
+      })
+      .catch(function () { /* mantém os textos padrão da página */ });
+
+    function valor(id) { return document.getElementById(id).value.trim(); }
+    function marcarErro(id, tem) {
+      document.getElementById('erro-' + id).style.display = tem ? 'block' : 'none';
+      document.getElementById(id).style.borderColor = tem ? '#ff8c8c' : '';
+    }
+
+    form.addEventListener('submit', function (e) {
+      e.preventDefault();
+      var lead = {
+        nome: valor('nome'),
+        telefone: valor('telefone'),
+        email: valor('email'),
+        cargo: valor('cargo'),
+        instituicao: valor('instituicao')
+      };
+      var ok = true;
+      marcarErro('nome', !lead.nome); if (!lead.nome) ok = false;
+      var soNumeros = lead.telefone.replace(/\D/g, '');
+      marcarErro('telefone', soNumeros.length < 10); if (soNumeros.length < 10) ok = false;
+      marcarErro('cargo', !lead.cargo); if (!lead.cargo) ok = false;
+      marcarErro('instituicao', !lead.instituicao); if (!lead.instituicao) ok = false;
+      if (!ok) return;
+
+      btn.disabled = true;
+      btn.textContent = 'Confirmando...';
+      document.getElementById('erroGeral').style.display = 'none';
+
+      // Grava o lead ANTES de redirecionar. Só redireciona com a confirmação de que salvou.
+      fetch(API, {
+        method: 'POST',
+        headers: { 'Content-Type': 'text/plain' },
+        body: JSON.stringify(lead)
+      })
+        .then(function (r) { return r.json(); })
+        .then(function (res) {
+          if (!res.ok) throw new Error(res.erro || 'falha ao salvar');
+          document.getElementById('telaForm').style.display = 'none';
+          document.getElementById('telaSucesso').style.display = 'block';
+          document.getElementById('linkWhats').href = res.whatsappUrl;
+          setTimeout(function () { window.location.href = res.whatsappUrl; }, 1200);
+        })
+        .catch(function (err) {
+          btn.disabled = false;
+          btn.textContent = 'Confirmar sorteio e ir para WhatsApp';
+          var box = document.getElementById('erroGeral');
+          box.textContent = 'Não foi possível confirmar seu cadastro. Verifique sua internet e tente novamente. (' + (err && err.message ? err.message : 'erro de conexão') + ')';
+          box.style.display = 'block';
+        });
+    });
+  </script>
+</body>
+</html>
