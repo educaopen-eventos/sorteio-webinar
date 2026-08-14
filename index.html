@@ -196,8 +196,8 @@
       .then(function (cfg) {
         document.querySelectorAll('[data-cfg="webinar"]').forEach(function (el) { el.textContent = cfg.webinar; });
         document.querySelectorAll('[data-cfg="sorteio"]').forEach(function (el) { el.textContent = cfg.sorteio; });
-        whatsappUrlDireto = cfg.whatsappUrl;
-        document.getElementById('atalhoWhats').href = cfg.whatsappUrl;
+        whatsappUrlDireto = cfg.whatsappUrlDireto || cfg.whatsappUrl;
+        document.getElementById('atalhoWhats').href = whatsappUrlDireto;
       })
       .catch(function () { /* mantém os textos padrão da página */ });
 
