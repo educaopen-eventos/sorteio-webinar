@@ -137,9 +137,9 @@
 
   <div class="card">
     <div id="telaForm">
-      <span class="tag">Sorteio · <span data-cfg="webinar">Webinar EducaOpen</span></span>
-      <h1>Garanta sua participação no <span data-cfg="sorteio">sorteio de 1 ingresso para o FIFE 2027, em Gramado</span></h1>
-      <p class="sub">Para participar do sorteio, preencha os dados. Ou fale direto com o Apresentador:</p>
+      <span class="tag"><span data-cfg="webinar">Webinar EducaOpen</span></span>
+      <h1>Fale direto com <span data-cfg="apresentador">Daniel Carneiro</span></h1>
+      <p class="sub">Preencha os dados — leva menos de 1 minuto — e você será direcionado ao WhatsApp com a mensagem pronta:</p>
 
       <form id="form" novalidate>
         <label for="nome">Nome completo</label>
@@ -161,7 +161,7 @@
         <input id="instituicao" type="text" autocomplete="organization" placeholder="Em nome de qual instituição você fala?" required>
         <div class="erro" id="erro-instituicao">Informe sua instituição.</div>
 
-        <button id="btn" type="submit">Confirmar sorteio e ir para WhatsApp</button>
+        <button id="btn" type="submit">Confirmar e ir para o WhatsApp</button>
       </form>
 
       <div id="erroGeral"></div>
@@ -171,13 +171,13 @@
         <span>Ir para o WhatsApp</span>
       </a>
 
-      <p class="rodape">Suas informações serão usadas exclusivamente para o sorteio e para o contato pós-evento, conforme a LGPD.</p>
+      <p class="rodape">Suas informações serão usadas exclusivamente para o contato pós-evento, conforme a LGPD.</p>
     </div>
 
     <div id="telaSucesso">
       <div class="check">✓</div>
       <h2>Cadastro confirmado!</h2>
-      <p>Você já está participando do sorteio. Estamos abrindo seu WhatsApp — se não abrir sozinho, toque no botão abaixo.</p>
+      <p>Estamos abrindo seu WhatsApp — se não abrir sozinho, toque no botão abaixo.</p>
       <a id="linkWhats" class="btn-whats" href="#">Abrir WhatsApp</a>
     </div>
   </div>
@@ -195,7 +195,7 @@
       .then(function (r) { return r.json(); })
       .then(function (cfg) {
         document.querySelectorAll('[data-cfg="webinar"]').forEach(function (el) { el.textContent = cfg.webinar; });
-        document.querySelectorAll('[data-cfg="sorteio"]').forEach(function (el) { el.textContent = cfg.sorteio; });
+        document.querySelectorAll('[data-cfg="apresentador"]').forEach(function (el) { el.textContent = cfg.apresentador; });
         whatsappUrlDireto = cfg.whatsappUrlDireto || cfg.whatsappUrl;
         document.getElementById('atalhoWhats').href = whatsappUrlDireto;
       })
