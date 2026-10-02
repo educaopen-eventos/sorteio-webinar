@@ -1,0 +1,541 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Webinar Educaopen — Personalização de Bolsas e Descontos: até onde a IES pode ir?</title>
+  <meta name="description" content="Webinar online e gratuito da Educaopen sobre os limites da personalização de bolsas e descontos nas IES: IA, critérios de elegibilidade, isonomia, LGPD, sustentabilidade e segurança jurídica.">
+  <meta property="og:title" content="Personalização de Bolsas e Descontos: até onde a IES pode ir?">
+  <meta property="og:description" content="Webinar online e gratuito da Educaopen. Garanta sua vaga.">
+  <meta property="og:type" content="website">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=SUSE:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    /* Layout: duas colunas no desktop (conteúdo à esquerda, formulário fixo à direita);
+       no celular o formulário sobe para logo depois do título e da data. */
+    :root {
+      --navy: #0b1533;
+      --navy-soft: #3d4a66;
+      --slate: #6b7a94;
+      --line: #d9e6ef;
+      --cyan: #00ccff;
+      --cyan-deep: #00a8d6;
+      --cyan-ink: #007a9e;
+      --ice: #eaf8fd;
+      --bg: #f6fbfe;
+      --white: #ffffff;
+      --erro: #c62f3d;
+      --fonte: 'SUSE', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { -webkit-text-size-adjust: 100%; }
+    body {
+      font-family: var(--fonte);
+      background: var(--bg);
+      color: var(--navy);
+      line-height: 1.5;
+      overflow-x: hidden;
+      position: relative;
+    }
+    /* Formas do folder: círculos ciano nos cantos */
+    body::before, body::after {
+      content: ''; position: absolute; border-radius: 50%; z-index: 0; pointer-events: none;
+    }
+    body::before {
+      width: 520px; height: 520px; top: -300px; right: -180px;
+      background: radial-gradient(circle at 35% 65%, #5fe0ff 0%, var(--cyan) 60%);
+      box-shadow: 0 0 0 70px rgba(0,204,255,.12);
+    }
+    body::after {
+      width: 360px; height: 360px; bottom: -220px; left: -160px;
+      background: var(--cyan); opacity: .9;
+      box-shadow: 0 0 0 60px rgba(0,204,255,.12);
+    }
+    .pagina {
+      position: relative; z-index: 1;
+      max-width: 1120px; margin: 0 auto;
+      padding-block: 28px 56px; padding-inline: 20px;
+      display: grid; gap: 28px;
+      grid-template-columns: minmax(0, 1fr);
+      grid-template-areas: "topo" "form" "detalhes";
+    }
+    .topo { grid-area: topo; display: flex; flex-direction: column; gap: 18px; min-width: 0; }
+    .col-form { grid-area: form; min-width: 0; }
+    .detalhes { grid-area: detalhes; display: flex; flex-direction: column; gap: 32px; min-width: 0; }
+
+    .logo img { height: 30px; display: block; }
+    .selo {
+      align-self: flex-start;
+      display: inline-flex; align-items: center; gap: 9px;
+      background: var(--navy); color: var(--white);
+      font-size: 12.5px; font-weight: 600; letter-spacing: 1.6px;
+      border-radius: 999px; padding: 8px 18px 8px 14px;
+    }
+    .selo svg { width: 18px; height: 18px; }
+    .olho {
+      font-size: 12.5px; font-weight: 700; letter-spacing: 3px; text-transform: uppercase;
+      color: var(--slate);
+    }
+    h1 {
+      font-size: clamp(32px, 7.4vw, 54px); font-weight: 800; line-height: 1.04;
+      letter-spacing: -.025em; text-wrap: balance;
+    }
+    h1 em { font-style: normal; color: var(--cyan-deep); display: block; }
+    .quando {
+      display: flex; flex-wrap: wrap; align-items: center; gap: 10px 18px;
+      background: var(--ice); border-radius: 16px; padding: 14px 18px;
+    }
+    .quando .dia { font-size: 40px; font-weight: 800; line-height: 1; color: var(--cyan-deep); letter-spacing: -.03em; }
+    .quando .txt { display: flex; flex-direction: column; line-height: 1.25; }
+    .quando .txt b { font-size: 16px; font-weight: 800; letter-spacing: .3px; text-transform: uppercase; }
+    .quando .txt span { font-size: 13.5px; color: var(--navy-soft); font-weight: 500; }
+    .quando .sep { width: 1px; align-self: stretch; background: #bfe6f3; }
+
+    /* Formulário */
+    .card {
+      background: var(--white);
+      border: 1px solid var(--line);
+      border-radius: 20px;
+      padding: 24px 22px 22px;
+      box-shadow: 0 18px 50px -22px rgba(11,21,51,.28);
+    }
+    .card h2 { font-size: 22px; font-weight: 800; letter-spacing: -.01em; line-height: 1.2; }
+    .card .sub { font-size: 14.5px; color: var(--navy-soft); margin-top: 4px; }
+    form { display: flex; flex-direction: column; gap: 12px; margin-top: 18px; }
+    .campo { display: flex; flex-direction: column; gap: 5px; min-width: 0; }
+    .dupla { display: grid; grid-template-columns: 1fr; gap: 12px; }
+    label, legend { font-size: 13px; font-weight: 700; color: var(--navy); }
+    input[type="text"], input[type="tel"], input[type="email"] {
+      width: 100%;
+      font-family: inherit; font-size: 16px; color: var(--navy);
+      background: #f9fcfe; border: 1.5px solid var(--line); border-radius: 12px;
+      padding: 12px 14px; outline: none;
+      transition: border-color .15s, box-shadow .15s, background .15s;
+    }
+    input::placeholder { color: #9aa8bd; }
+    input[type="text"]:focus, input[type="tel"]:focus, input[type="email"]:focus {
+      border-color: var(--cyan-deep); background: var(--white);
+      box-shadow: 0 0 0 4px rgba(0,204,255,.18);
+    }
+    .campo.invalido input { border-color: var(--erro); }
+    .erro { display: none; font-size: 12.5px; color: var(--erro); font-weight: 500; }
+    .invalido .erro { display: block; }
+    .hp { position: absolute; left: -9999px; width: 1px; height: 1px; opacity: 0; }
+
+    fieldset { border: none; display: flex; flex-direction: column; gap: 7px; min-width: 0; }
+    .simnao { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+    .simnao input { position: absolute; opacity: 0; pointer-events: none; }
+    .simnao label {
+      display: flex; align-items: center; justify-content: center; gap: 8px;
+      font-size: 16px; font-weight: 700; color: var(--navy);
+      background: #f9fcfe; border: 1.5px solid var(--line); border-radius: 12px;
+      padding: 13px 10px; cursor: pointer; user-select: none;
+      transition: background .12s, border-color .12s, color .12s, transform .05s;
+    }
+    .simnao label:hover { border-color: var(--cyan-deep); }
+    .simnao label:active { transform: scale(.98); }
+    .simnao label::before {
+      content: ''; width: 16px; height: 16px; border-radius: 50%;
+      border: 2px solid #b4c4d6; background: var(--white); flex-shrink: 0;
+      transition: border-color .12s, box-shadow .12s;
+    }
+    .simnao input:checked + label { background: var(--navy); border-color: var(--navy); color: var(--white); }
+    .simnao input:checked + label::before { border-color: var(--cyan); box-shadow: inset 0 0 0 3px var(--navy); background: var(--cyan); }
+    .simnao input:focus-visible + label { box-shadow: 0 0 0 4px rgba(0,204,255,.3); }
+    fieldset.invalido .simnao label { border-color: var(--erro); }
+
+    button.cta, a.cta {
+      display: flex; align-items: center; justify-content: center; gap: 10px;
+      width: 100%; margin-top: 6px;
+      font-family: inherit; font-size: 18px; font-weight: 800; letter-spacing: -.01em;
+      color: var(--navy); text-decoration: none;
+      background: linear-gradient(180deg, #3fdcff 0%, var(--cyan) 100%);
+      border: none; border-radius: 14px; padding: 16px 14px; cursor: pointer;
+      box-shadow: 0 10px 24px -10px rgba(0,168,214,.9);
+      transition: filter .15s, transform .05s;
+    }
+    button.cta:hover, a.cta:hover { filter: brightness(1.05); }
+    button.cta:active { transform: scale(.99); }
+    button.cta:disabled { filter: grayscale(.4) brightness(.95); cursor: wait; }
+    button.cta:focus-visible, a:focus-visible { outline: 3px solid var(--navy); outline-offset: 2px; }
+    .lgpd { font-size: 12px; color: var(--slate); line-height: 1.5; text-align: center; margin-top: 12px; }
+    #erroGeral {
+      font-size: 13.5px; color: var(--erro); background: #fdeff0; border: 1px solid #f3c2c7;
+      border-radius: 10px; padding: 10px 12px; line-height: 1.45;
+    }
+
+    /* Tela de confirmação */
+    #telaSucesso { text-align: center; }
+    .check {
+      width: 56px; height: 56px; border-radius: 50%; margin: 2px auto 14px;
+      background: var(--ice); color: var(--cyan-ink);
+      display: flex; align-items: center; justify-content: center;
+    }
+    .check svg { width: 28px; height: 28px; }
+    #telaSucesso p { font-size: 15px; color: var(--navy-soft); margin-top: 8px; }
+    .acoes { display: flex; flex-direction: column; gap: 10px; margin-top: 20px; }
+    a.sec {
+      display: flex; align-items: center; justify-content: center; gap: 8px;
+      font-size: 15px; font-weight: 700; color: var(--navy); text-decoration: none;
+      border: 1.5px solid var(--line); border-radius: 12px; padding: 12px;
+      background: var(--white);
+    }
+    a.sec:hover { border-color: var(--cyan-deep); }
+    .passos { text-align: left; background: var(--ice); border-radius: 14px; padding: 14px 16px; margin-top: 18px; font-size: 14px; color: var(--navy-soft); }
+    .passos b { color: var(--navy); }
+
+    /* Conteúdo */
+    .bloco h3 {
+      font-size: 13px; font-weight: 800; letter-spacing: 2px; text-transform: uppercase;
+      display: flex; align-items: center; gap: 12px; margin-bottom: 14px;
+    }
+    .bloco h3::after { content: ''; width: 44px; height: 2px; background: var(--cyan); }
+    .lead { font-size: 17px; color: var(--navy-soft); max-width: 60ch; }
+    .temas { list-style: none; display: grid; grid-template-columns: 1fr; gap: 14px 28px; }
+    .temas li { display: flex; flex-direction: column; gap: 2px; padding-left: 16px; border-left: 2px solid var(--cyan); }
+    .temas b { font-size: 16px; font-weight: 800; }
+    .temas span { font-size: 14.5px; color: var(--navy-soft); }
+    .palestrantes { display: grid; grid-template-columns: 1fr; gap: 16px; }
+    .pessoa { display: flex; align-items: center; gap: 14px; min-width: 0; }
+    .pessoa img { width: 76px; height: 76px; border-radius: 50%; object-fit: cover; flex-shrink: 0; background: var(--ice); }
+    .pessoa b { display: block; font-size: 16.5px; font-weight: 800; line-height: 1.25; }
+    .pessoa span { display: block; font-size: 13.5px; color: var(--navy-soft); line-height: 1.35; margin-top: 2px; }
+    .rodape { font-size: 12.5px; color: var(--slate); }
+    .rodape a { color: var(--cyan-ink); }
+
+    @media (max-width: 939px) {
+      body::before { width: 240px; height: 240px; top: -150px; right: -110px; box-shadow: 0 0 0 40px rgba(0,204,255,.12); }
+    }
+    @media (min-width: 560px) {
+      .dupla { grid-template-columns: 1fr 1fr; }
+      .temas { grid-template-columns: 1fr 1fr; }
+    }
+    @media (min-width: 940px) {
+      .pagina {
+        grid-template-columns: minmax(0, 1.15fr) minmax(380px, .85fr);
+        grid-template-areas: "topo form" "detalhes form";
+        column-gap: 56px; row-gap: 36px; padding-block: 44px 72px;
+        align-items: start;
+      }
+      .col-form { position: sticky; top: 28px; }
+      .card { padding: 28px 28px 26px; }
+      .logo img { height: 34px; }
+      .palestrantes { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+      .pessoa { flex-direction: column; align-items: flex-start; }
+      .pessoa img { width: 92px; height: 92px; }
+    }
+    @media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
+  </style>
+</head>
+<body>
+  <main class="pagina">
+    <header class="topo">
+      <div class="logo"><img src="logo-educaopen-escuro.svg" alt="Educaopen"></div>
+      <span class="selo">
+        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><rect x="2" y="6" width="14" height="12" rx="3" fill="#fff"/><path d="M16 10.5l5-3v9l-5-3z" fill="#fff"/><circle cx="9" cy="12" r="2.2" fill="#0b1533"/></svg>
+        WEBINAR ONLINE E GRATUITO
+      </span>
+      <p class="olho">Bolsas e descontos</p>
+      <h1>Personalização de Bolsas e Descontos: <em>até onde a IES pode ir?</em></h1>
+      <div class="quando">
+        <span class="dia" data-evento="dia">28</span>
+        <span class="txt"><b data-evento="mes">de outubro</b><span data-evento="semana">Quarta-feira</span></span>
+        <span class="sep" aria-hidden="true"></span>
+        <span class="txt"><b data-evento="hora">Às 10h</b><span>Horário de Brasília · ao vivo</span></span>
+      </div>
+    </header>
+
+    <section class="col-form" aria-label="Inscrição">
+      <div class="card">
+        <div id="telaForm">
+          <h2>Garanta sua vaga</h2>
+          <p class="sub">Leva menos de 1 minuto. O link de acesso chega por e-mail e WhatsApp.</p>
+
+          <form id="form" novalidate>
+            <div class="campo" id="c-nome">
+              <label for="nome">Nome completo</label>
+              <input id="nome" name="name" type="text" autocomplete="name" autocapitalize="words" placeholder="Seu nome" required>
+              <span class="erro">Informe seu nome.</span>
+            </div>
+
+            <div class="dupla">
+              <div class="campo" id="c-email">
+                <label for="email">E-mail</label>
+                <input id="email" name="email" type="email" autocomplete="email" inputmode="email" placeholder="voce@instituicao.edu.br" required>
+                <span class="erro">Informe um e-mail válido.</span>
+              </div>
+              <div class="campo" id="c-telefone">
+                <label for="telefone">Telefone / WhatsApp</label>
+                <input id="telefone" name="tel" type="tel" autocomplete="tel-national" inputmode="tel" placeholder="(11) 99999-9999" required>
+                <span class="erro">Informe um telefone com DDD.</span>
+              </div>
+            </div>
+
+            <div class="dupla">
+              <div class="campo" id="c-instituicao">
+                <label for="instituicao">Instituição</label>
+                <input id="instituicao" name="organization" type="text" autocomplete="organization" placeholder="Nome da IES" required>
+                <span class="erro">Informe sua instituição.</span>
+              </div>
+              <div class="campo" id="c-cargo">
+                <label for="cargo">Cargo</label>
+                <input id="cargo" name="organization-title" type="text" autocomplete="organization-title" list="cargos" placeholder="Ex.: Diretor Financeiro" required>
+                <span class="erro">Informe seu cargo.</span>
+                <datalist id="cargos">
+                  <option value="Reitor(a)"></option>
+                  <option value="Pró-Reitor(a)"></option>
+                  <option value="Mantenedor(a)"></option>
+                  <option value="Diretor(a) Geral"></option>
+                  <option value="Diretor(a) Financeiro(a)"></option>
+                  <option value="Diretor(a) Acadêmico(a)"></option>
+                  <option value="Diretor(a) Comercial / Captação"></option>
+                  <option value="Gerente Financeiro(a)"></option>
+                  <option value="Gerente de Captação e Retenção"></option>
+                  <option value="Coordenador(a) de Bolsas e Financiamentos"></option>
+                  <option value="Assistente Social"></option>
+                  <option value="Jurídico / Compliance"></option>
+                  <option value="Procurador(a) Institucional"></option>
+                </datalist>
+              </div>
+            </div>
+
+            <fieldset id="c-bolsas">
+              <legend>Sua instituição concede bolsas ou descontos?</legend>
+              <div class="simnao">
+                <input type="radio" name="bolsas" id="bolsas-sim" value="Sim">
+                <label for="bolsas-sim">Sim</label>
+                <input type="radio" name="bolsas" id="bolsas-nao" value="Não">
+                <label for="bolsas-nao">Não</label>
+              </div>
+              <span class="erro">Escolha uma opção.</span>
+            </fieldset>
+
+            <input class="hp" type="text" id="site" name="site" tabindex="-1" autocomplete="off" aria-hidden="true">
+
+            <div id="erroGeral" hidden></div>
+            <button id="btn" class="cta" type="submit">Inscreva-se gratuitamente <span aria-hidden="true">→</span></button>
+          </form>
+          <p class="lgpd">Ao se inscrever, você concorda em receber comunicações da Educaopen sobre este evento e conteúdos relacionados. Seus dados são tratados conforme a LGPD.</p>
+        </div>
+
+        <div id="telaSucesso" hidden>
+          <div class="check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></div>
+          <h2><span id="sucessoNome">Inscrição</span> confirmada!</h2>
+          <p>Seu lugar no webinar está garantido. Salve a data agora para não perder:</p>
+          <div class="acoes">
+            <a id="btnAgenda" class="cta" href="#" target="_blank" rel="noopener">Adicionar ao Google Agenda</a>
+            <a id="btnIcs" class="sec" href="#" download="webinar-educaopen.ics">Outlook / Apple (arquivo .ics)</a>
+            <a id="btnConvidar" class="sec" href="#" target="_blank" rel="noopener">Convidar um colega pelo WhatsApp</a>
+          </div>
+          <div class="passos">
+            <b>O que acontece agora:</b> você recebe o link de acesso por e-mail e WhatsApp, e um lembrete no dia do evento.
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <div class="detalhes">
+      <section class="bloco">
+        <h3>Sobre o encontro</h3>
+        <p class="lead">Personalizar bolsas e descontos por aluno ajuda a captar e reter. Mas cada concessão precisa de critério, isonomia e respaldo jurídico. Neste webinar, tecnologia e direito sentam à mesma mesa para mostrar onde está o limite e como a IES pode avançar com segurança.</p>
+      </section>
+
+      <section class="bloco">
+        <h3>O que vamos discutir</h3>
+        <ul class="temas">
+          <li><b>IA</b><span>O uso de inteligência artificial para definir quem recebe bolsa ou desconto, e de quanto.</span></li>
+          <li><b>Critérios de elegibilidade</b><span>Como definir e documentar regras claras de concessão.</span></li>
+          <li><b>Isonomia</b><span>Tratar alunos de forma diferente sem ferir a igualdade entre eles.</span></li>
+          <li><b>LGPD</b><span>Quais dados do aluno podem entrar na análise, e com que cuidados.</span></li>
+          <li><b>Sustentabilidade</b><span>Política de descontos que cabe na conta da instituição.</span></li>
+          <li><b>Segurança jurídica</b><span>Como reduzir o risco de questionamentos sobre a política de bolsas.</span></li>
+        </ul>
+      </section>
+
+      <section class="bloco">
+        <h3>Com</h3>
+        <div class="palestrantes">
+          <div class="pessoa">
+            <img src="daniel-carneiro.jpg" alt="Daniel Carneiro" width="92" height="92">
+            <div><b>Daniel Carneiro</b><span>Sócio Fundador da Educaopen</span></div>
+          </div>
+          <div class="pessoa">
+            <img src="fernanda-ortolan.jpg" alt="Fernanda Ortolan" width="92" height="92">
+            <div><b>Fernanda Ortolan</b><span>Advogada Especialista em Negócios de Impacto Positivo</span></div>
+          </div>
+          <div class="pessoa">
+            <img src="daniel-cavalcante.jpg" alt="Daniel Cavalcante" width="92" height="92">
+            <div><b>Daniel Cavalcante</b><span>Sócio da Covac Sociedade de Advogados</span></div>
+          </div>
+        </div>
+      </section>
+
+      <p class="rodape">Educaopen · Evento online e gratuito, com vagas limitadas à capacidade da sala.</p>
+    </div>
+  </main>
+
+  <script>
+    // ===== CONFIGURAÇÃO DO EVENTO (único lugar para alterar data, nome e textos) =====
+    var EVENTO = {
+      nome: 'Personalização de Bolsas e Descontos: até onde a IES pode ir?',
+      id: 'Webinar Bolsas e Descontos',            // como aparece na coluna "Evento" da planilha
+      inicio: '2026-10-28T10:00:00-03:00',         // data e hora de início (horário de Brasília)
+      duracaoMin: 90,
+      diaSemana: 'Quarta-feira',
+      descricao: 'Webinar online e gratuito da Educaopen com Daniel Carneiro, Fernanda Ortolan e Daniel Cavalcante. O link de acesso será enviado por e-mail e WhatsApp.'
+    };
+    // Endereço do motor que grava as inscrições na planilha (Google Apps Script)
+    var API = 'https://script.google.com/macros/s/AKfycbzXbsHi9KwMP3Wq41sYIqz7_fqy97c4bU5pmT1rFu8UIK9e0e9UvKUbW8Wimqc_2kUGGQ/exec';
+    var CAMPOS = ['nome', 'email', 'telefone', 'instituicao', 'cargo'];
+    var CHAVE = 'educaopen_inscricao';
+
+    function el(id) { return document.getElementById(id); }
+    function valor(id) { return el(id).value.trim(); }
+
+    // Data exibida na página vem da configuração acima
+    (function () {
+      var d = new Date(EVENTO.inicio);
+      var meses = ['janeiro','fevereiro','março','abril','maio','junho','julho','agosto','setembro','outubro','novembro','dezembro'];
+      var p = new Intl.DateTimeFormat('pt-BR', { timeZone: 'America/Sao_Paulo', day: 'numeric', month: 'numeric', hour: 'numeric', minute: '2-digit', hour12: false }).formatToParts(d);
+      var o = {}; p.forEach(function (x) { o[x.type] = x.value; });
+      document.querySelector('[data-evento="dia"]').textContent = o.day;
+      document.querySelector('[data-evento="mes"]').textContent = 'de ' + meses[Number(o.month) - 1];
+      document.querySelector('[data-evento="semana"]').textContent = EVENTO.diaSemana;
+      document.querySelector('[data-evento="hora"]').textContent = 'Às ' + Number(o.hour) + 'h' + (o.minute !== '00' ? o.minute : '');
+    })();
+
+    // ----- Máscara de telefone -----
+    function mascaraTel(v) {
+      var n = v.replace(/\D/g, '');
+      if (n.length > 11 && n.indexOf('55') === 0) n = n.slice(2); // remove DDI vindo do preenchimento automático
+      n = n.slice(0, 11);
+      if (n.length <= 2) return n.length ? '(' + n : '';
+      if (n.length <= 6) return '(' + n.slice(0, 2) + ') ' + n.slice(2);
+      if (n.length <= 10) return '(' + n.slice(0, 2) + ') ' + n.slice(2, 6) + '-' + n.slice(6);
+      return '(' + n.slice(0, 2) + ') ' + n.slice(2, 7) + '-' + n.slice(7);
+    }
+    el('telefone').addEventListener('input', function () { this.value = mascaraTel(this.value); });
+
+    // ----- Pré-preenchimento -----
+    // 1) dados guardados neste navegador (quem já se inscreveu em outro evento)
+    // 2) parâmetros do link (ex.: ?nome=Ana&instituicao=UniX vindos de e-mail ou WhatsApp)
+    var params = new URLSearchParams(window.location.search);
+    var origem = {
+      utm_source: params.get('utm_source') || '',
+      utm_medium: params.get('utm_medium') || '',
+      utm_campaign: params.get('utm_campaign') || ''
+    };
+    (function preencher() {
+      var salvo = {};
+      try { salvo = JSON.parse(localStorage.getItem(CHAVE) || '{}'); } catch (e) {}
+      var apelidos = { nome: ['nome', 'name'], email: ['email', 'e-mail'], telefone: ['telefone', 'tel', 'whatsapp', 'phone'], instituicao: ['instituicao', 'ies', 'empresa', 'company'], cargo: ['cargo', 'jobtitle'] };
+      var veioDoLink = false;
+      CAMPOS.forEach(function (c) {
+        var v = salvo[c] || '';
+        apelidos[c].forEach(function (a) { if (params.get(a)) { v = params.get(a); veioDoLink = true; } });
+        if (v) el(c).value = c === 'telefone' ? mascaraTel(v) : v;
+      });
+      var b = (params.get('bolsas') || salvo.bolsas || '').toLowerCase();
+      if (b === 'sim') el('bolsas-sim').checked = true;
+      if (b === 'nao' || b === 'não') el('bolsas-nao').checked = true;
+      // Tira os dados pessoais da barra de endereço depois de usar
+      if (veioDoLink && window.history.replaceState) {
+        var limpa = Object.keys(origem).filter(function (k) { return origem[k]; }).map(function (k) { return k + '=' + encodeURIComponent(origem[k]); }).join('&');
+        window.history.replaceState(null, '', window.location.pathname + (limpa ? '?' + limpa : ''));
+      }
+    })();
+
+    // ----- Validação -----
+    function marcar(id, invalido) { el('c-' + id).classList.toggle('invalido', invalido); return !invalido; }
+    function validar(lead) {
+      var ok = true;
+      ok = marcar('nome', lead.nome.length < 3) && ok;
+      ok = marcar('email', !/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(lead.email)) && ok;
+      ok = marcar('telefone', lead.telefone.replace(/\D/g, '').length < 10) && ok;
+      ok = marcar('instituicao', !lead.instituicao) && ok;
+      ok = marcar('cargo', !lead.cargo) && ok;
+      ok = marcar('bolsas', !lead.bolsas) && ok;
+      return ok;
+    }
+    CAMPOS.forEach(function (c) { el(c).addEventListener('input', function () { el('c-' + c).classList.remove('invalido'); }); });
+    document.querySelectorAll('input[name="bolsas"]').forEach(function (r) {
+      r.addEventListener('change', function () { el('c-bolsas').classList.remove('invalido'); });
+    });
+
+    // ----- Links da tela de confirmação -----
+    function carimbo(d) { return d.toISOString().replace(/[-:]/g, '').replace(/\.\d{3}/, ''); }
+    function montarConfirmacao(lead) {
+      var ini = new Date(EVENTO.inicio);
+      var fim = new Date(ini.getTime() + EVENTO.duracaoMin * 60000);
+      var titulo = 'Webinar Educaopen: ' + EVENTO.nome;
+      el('sucessoNome').textContent = lead.nome.split(' ')[0] + ', inscrição';
+      el('btnAgenda').href = 'https://calendar.google.com/calendar/render?action=TEMPLATE'
+        + '&text=' + encodeURIComponent(titulo)
+        + '&dates=' + carimbo(ini) + '/' + carimbo(fim)
+        + '&details=' + encodeURIComponent(EVENTO.descricao)
+        + '&location=' + encodeURIComponent('Online');
+      var ics = ['BEGIN:VCALENDAR', 'VERSION:2.0', 'PRODID:-//Educaopen//Webinar//PT-BR', 'BEGIN:VEVENT',
+        'UID:' + carimbo(ini) + '-webinar@educaopen', 'DTSTAMP:' + carimbo(new Date()),
+        'DTSTART:' + carimbo(ini), 'DTEND:' + carimbo(fim),
+        'SUMMARY:' + titulo.replace(/,/g, '\\,'), 'DESCRIPTION:' + EVENTO.descricao.replace(/,/g, '\\,'), 'LOCATION:Online',
+        'BEGIN:VALARM', 'TRIGGER:-PT30M', 'ACTION:DISPLAY', 'DESCRIPTION:Webinar Educaopen começa em 30 minutos', 'END:VALARM',
+        'END:VEVENT', 'END:VCALENDAR'].join('\r\n');
+      el('btnIcs').href = 'data:text/calendar;charset=utf-8,' + encodeURIComponent(ics);
+      var link = window.location.origin + window.location.pathname;
+      var dataTxt = document.querySelector('[data-evento="dia"]').textContent + ' ' + document.querySelector('[data-evento="mes"]').textContent;
+      el('btnConvidar').href = 'https://wa.me/?text=' + encodeURIComponent(
+        'Vou participar deste webinar gratuito da Educaopen: "' + EVENTO.nome + '", dia ' + dataTxt + ', às 10h. Acho que vale para você também: ' + link);
+    }
+
+    // ----- Envio -----
+    var form = el('form'), btn = el('btn'), textoBtn = btn.innerHTML;
+    form.addEventListener('submit', function (e) {
+      e.preventDefault();
+      var marcado = document.querySelector('input[name="bolsas"]:checked');
+      var lead = {
+        evento: EVENTO.id,
+        dataEvento: EVENTO.inicio,
+        nome: valor('nome'),
+        cargo: valor('cargo'),
+        instituicao: valor('instituicao'),
+        telefone: valor('telefone'),
+        email: valor('email').toLowerCase(),
+        bolsas: marcado ? marcado.value : '',
+        site: valor('site'),
+        utm_source: origem.utm_source, utm_medium: origem.utm_medium, utm_campaign: origem.utm_campaign
+      };
+      if (!validar(lead)) {
+        var primeiro = document.querySelector('.invalido input');
+        if (primeiro) primeiro.focus();
+        return;
+      }
+      btn.disabled = true;
+      btn.textContent = 'Confirmando sua vaga...';
+      el('erroGeral').hidden = true;
+
+      fetch(API, { method: 'POST', headers: { 'Content-Type': 'text/plain' }, body: JSON.stringify(lead) })
+        .then(function (r) { return r.json(); })
+        .then(function (res) {
+          // Só confirma se o motor gravou na aba Inscrições (protege contra motor desatualizado)
+          if (!res.ok || !res.inscricao) throw new Error(res.erro || 'falha ao salvar');
+          try {
+            var guardar = { bolsas: lead.bolsas };
+            CAMPOS.forEach(function (c) { guardar[c] = lead[c]; });
+            localStorage.setItem(CHAVE, JSON.stringify(guardar));
+          } catch (e2) {}
+          montarConfirmacao(lead);
+          el('telaForm').hidden = true;
+          el('telaSucesso').hidden = false;
+          document.querySelector('.col-form').scrollIntoView({ behavior: 'smooth', block: 'start' });
+        })
+        .catch(function () {
+          btn.disabled = false;
+          btn.innerHTML = textoBtn;
+          var box = el('erroGeral');
+          box.textContent = 'Não conseguimos registrar sua inscrição. Verifique sua internet e toque no botão novamente.';
+          box.hidden = false;
+        });
+    });
+  </script>
+</body>
+</html>
