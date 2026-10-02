@@ -173,6 +173,14 @@
     }
     .check svg { width: 28px; height: 28px; }
     #telaSucesso p { font-size: 15px; color: var(--navy-soft); margin-top: 8px; }
+    .aviso {
+      font-size: 13.5px; color: var(--erro); background: #fdeff0; border: 1px solid #f3c2c7;
+      border-radius: 10px; padding: 10px 12px; margin-top: 14px; line-height: 1.45;
+    }
+    .aviso button {
+      font-family: inherit; font-size: 13.5px; font-weight: 700; color: var(--erro);
+      background: none; border: none; text-decoration: underline; cursor: pointer; padding: 0 0 0 4px;
+    }
     .acoes { display: flex; flex-direction: column; gap: 10px; margin-top: 20px; }
     a.sec {
       display: flex; align-items: center; justify-content: center; gap: 8px;
@@ -321,7 +329,11 @@
         <div id="telaSucesso" hidden>
           <div class="check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></div>
           <h2><span id="sucessoNome">Inscrição</span> confirmada!</h2>
-          <p>Seu lugar no webinar está garantido. Salve a data agora para não perder:</p>
+          <p>Deu tudo certo: seu lugar no webinar está garantido. Salve a data agora para não perder:</p>
+          <div id="avisoFalha" class="aviso" hidden>
+            Sua conexão falhou ao registrar a inscrição.
+            <button type="button" id="btnRetentar">Tentar de novo</button>
+          </div>
           <div class="acoes">
             <a id="btnAgenda" class="cta" href="#" target="_blank" rel="noopener">Adicionar ao Google Agenda</a>
             <a id="btnIcs" class="sec" href="#" download="webinar-educaopen.ics">Outlook / Apple (arquivo .ics)</a>
@@ -509,33 +521,56 @@
         if (primeiro) primeiro.focus();
         return;
       }
-      btn.disabled = true;
-      btn.textContent = 'Confirmando sua vaga...';
-      el('erroGeral').hidden = true;
+      // Mostra a confirmação na hora; o registro na planilha segue em segundo plano.
+      try {
+        var guardar = { bolsas: lead.bolsas };
+        CAMPOS.forEach(function (c) { guardar[c] = lead[c]; });
+        localStorage.setItem(CHAVE, JSON.stringify(guardar));
+        localStorage.setItem(PENDENTE, JSON.stringify(lead));
+      } catch (e2) {}
+      montarConfirmacao(lead);
+      el('avisoFalha').hidden = true;
+      el('telaForm').hidden = true;
+      el('telaSucesso').hidden = false;
+      document.querySelector('.col-form').scrollIntoView({ behavior: 'smooth', block: 'start' });
+      registrar(lead, 1);
+    });
 
-      fetch(API, { method: 'POST', headers: { 'Content-Type': 'text/plain' }, body: JSON.stringify(lead) })
+    // ----- Registro em segundo plano: até 3 tentativas de 20s cada -----
+    var PENDENTE = 'educaopen_inscricao_pendente';
+    function limparPendente() { try { localStorage.removeItem(PENDENTE); } catch (e) {} }
+    function tentar(lead) {
+      var ctrl = window.AbortController ? new AbortController() : null;
+      var relogio = setTimeout(function () { if (ctrl) ctrl.abort(); }, 20000);
+      return fetch(API, {
+        method: 'POST', headers: { 'Content-Type': 'text/plain' }, body: JSON.stringify(lead),
+        keepalive: true, signal: ctrl ? ctrl.signal : undefined
+      })
         .then(function (r) { return r.json(); })
         .then(function (res) {
-          // Só confirma se o motor gravou na aba Inscrições (protege contra motor desatualizado)
+          clearTimeout(relogio);
           if (!res.ok || !res.inscricao) throw new Error(res.erro || 'falha ao salvar');
-          try {
-            var guardar = { bolsas: lead.bolsas };
-            CAMPOS.forEach(function (c) { guardar[c] = lead[c]; });
-            localStorage.setItem(CHAVE, JSON.stringify(guardar));
-          } catch (e2) {}
-          montarConfirmacao(lead);
-          el('telaForm').hidden = true;
-          el('telaSucesso').hidden = false;
-          document.querySelector('.col-form').scrollIntoView({ behavior: 'smooth', block: 'start' });
-        })
-        .catch(function () {
-          btn.disabled = false;
-          btn.innerHTML = textoBtn;
-          var box = el('erroGeral');
-          box.textContent = 'Não conseguimos registrar sua inscrição. Verifique sua internet e toque no botão novamente.';
-          box.hidden = false;
-        });
+        }, function (err) { clearTimeout(relogio); throw err; });
+    }
+    function registrar(lead, tentativa) {
+      tentar(lead).then(limparPendente).catch(function () {
+        if (tentativa < 3) { setTimeout(function () { registrar(lead, tentativa + 1); }, 1500 * tentativa); return; }
+        ultimoLead = lead;
+        el('avisoFalha').hidden = false;
+      });
+    }
+    var ultimoLead = null;
+    el('btnRetentar').addEventListener('click', function () {
+      if (!ultimoLead) return;
+      el('avisoFalha').hidden = true;
+      registrar(ultimoLead, 1);
     });
+    // Inscrição que ficou sem registrar numa visita anterior (ex.: caiu a internet): reenvia em silêncio
+    (function () {
+      var p = null;
+      try { p = JSON.parse(localStorage.getItem(PENDENTE) || 'null'); } catch (e) {}
+      if (p && p.evento === EVENTO.id) tentar(p).then(limparPendente).catch(function () {});
+    })();
   </script>
 </body>
 </html>
