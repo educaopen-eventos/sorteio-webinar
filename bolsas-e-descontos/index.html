@@ -542,15 +542,14 @@
     function tentar(lead) {
       var ctrl = window.AbortController ? new AbortController() : null;
       var relogio = setTimeout(function () { if (ctrl) ctrl.abort(); }, 20000);
+      // "no-cors": alguns navegadores (ex.: com mais de uma conta Google aberta) gravam a inscrição mas
+      // bloqueiam a leitura da resposta do Google. Por isso não dependemos da resposta: se o envio
+      // chegou ao Google, está registrado; só falha de rede (sem internet) conta como erro.
       return fetch(API, {
-        method: 'POST', headers: { 'Content-Type': 'text/plain' }, body: JSON.stringify(lead),
+        method: 'POST', mode: 'no-cors', headers: { 'Content-Type': 'text/plain' }, body: JSON.stringify(lead),
         keepalive: true, signal: ctrl ? ctrl.signal : undefined
       })
-        .then(function (r) { return r.json(); })
-        .then(function (res) {
-          clearTimeout(relogio);
-          if (!res.ok || !res.inscricao) throw new Error(res.erro || 'falha ao salvar');
-        }, function (err) { clearTimeout(relogio); throw err; });
+        .then(function () { clearTimeout(relogio); }, function (err) { clearTimeout(relogio); throw err; });
     }
     function registrar(lead, tentativa) {
       tentar(lead).then(limparPendente).catch(function () {
